@@ -8,8 +8,8 @@ app.config.from_object('flask_config.Config')
 # Create base route for default web page and define a function to be executed whenever a request hits the route endpoint
 @app.route('/')
 def index():
-    # Return "Hello World!"
-    return 'Hello World!'
+    # Return the rendered "index.html" template
+    return render_template("index.html")
 
 # Run this app only when this file is executed directly (rather than imported from another file)
 if __name__ == '__main__':

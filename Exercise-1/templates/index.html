@@ -12,6 +12,12 @@
       <h2>Items</h2>
       <ul class="list-group mb-4">
         <!-- List the todo items here -->
+        <!-- For each item within the 'items' variable passed through using the 
+          render_template() method within the app.py file, create a new <li> 
+          element and populate this with the item title -->
+        {% for item in items %}
+          <li>{{ item.title }}</li>
+        {% endfor %}
       </ul>
     </div>
   </div>

@@ -27,6 +27,15 @@ def add_item():
     return redirect('/')
 
 
+# Create route for marking items as complete and function to be executed when HTML form is submitted
+# This path contains a variable '<item_id>' which will change depending on which item button is clicked
+@app.route('/complete_item/<item_id>', methods=['POST'])
+def complete_item(item_id):
+    # Save the item, passing through the new item dictionary value. 'id' and 'title' stay the same, 'status' is updated
+    session.save_item({'id': int(item_id), 'status': 'Complete', 'title': session.get_item(item_id)['title']})
+    # Finally redirect the user back to the '/' route where the base route function executes again
+    return redirect('/')
+
 # Run this app only when this file is executed directly (rather than imported from another file)
 if __name__ == '__main__':
     app.run()

@@ -22,13 +22,17 @@
       </form>
       <h2>Items</h2>
       <ul class="list-group mb-4">
+        <form method="POST">
         <!-- List the todo items here -->
         <!-- For each item within the 'items' variable passed through using the 
           render_template() method within the app.py file, create a new <li> 
           element and populate this with the item title -->
         {% for item in items %}
-          <li>{{ item.title }}</li>
+          <!-- Add button for each listed item which when clicked will provide the
+            'complete_item' method with the correct item id -->
+          <li>{{ item.title }} - {{ item.status }} - <button type="submit" name="complete_item_{{ item.id }}" formaction="/complete_item/{{ item.id }}">Mark as Complete</button></li>
         {% endfor %}
+        </form>
       </ul>
     </div>
   </div>

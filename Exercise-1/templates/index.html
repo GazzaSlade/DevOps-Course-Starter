@@ -9,6 +9,17 @@
 
   <div class="row">
     <div class="col-md-12">
+      <!-- Add a form element, and specify the path and method to use when the
+          form is submitted -->
+      <form action="/add_item" method="POST">
+        <!-- Add a header, textbox and button element to our form
+          When the button is clicked, the user is sent to the '/add_item' route,
+          and the textbox value is added to the 'request.form' dictionary for use
+          within the app.py file -->
+        <h3>ADD NEW ITEM</h3>
+        <input class="form-control col-sm-4" name="add_item_title" type="text" placeholder="Enter Item Name" maxlength="128" autofocus />
+        <button class="btn btn-primary">Add New Item</button>
+      </form>
       <h2>Items</h2>
       <ul class="list-group mb-4">
         <!-- List the todo items here -->

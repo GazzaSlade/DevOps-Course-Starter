@@ -10,7 +10,8 @@ app.config.from_object('flask_config.Config')
 @app.route('/')
 def index():
     # Define get_items variable to retrieve all items currently saved within the browser session
-    get_items = session.get_items()
+    # Reverse sort (alphabetic) the results by 'status' to get 'Not Started' before 'Completed'
+    get_items = sorted(session.get_items(), key=lambda item: item['status'], reverse=True)
     # Return the rendered "index.html" template
     # Pass the value of get_items into the template as variable items (used by Jinja2)
     return render_template("index.html", items=get_items)

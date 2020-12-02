@@ -31,9 +31,10 @@ def index():
 def add_item():
     # Retrieve HTML form 'add_item_title' textbox value and store the reslt in a variable
     new_item = request.form.get('add_item_title', None)
+    item_description = request.form.get('add_item_description', None)
 
     # Update the global "params" variable with a couple of list-specific key/values
-    params.update({"idList": "5f3fbee985386f08ed6c7c77", "name": new_item}) # To-Do List ID
+    params.update({"idList": "5f3fbee985386f08ed6c7c77", "name": new_item, "desc": item_description}) # To-Do List ID
 
     # Send POST request to the /cards/ API endpoint to publish a new item to the Trello list
     constructed_url = base_url + "cards/"

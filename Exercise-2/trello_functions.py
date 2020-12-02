@@ -1,6 +1,7 @@
 from os import environ
 import requests
 import json
+from classes import Item
 
 TRELLO_MEMBER_ID = environ['TRELLO_MEMBER_ID']
 TRELLO_BOARD_ID = "5f3fbee941f0381f9d52aeef"
@@ -34,7 +35,7 @@ def get_cards(status=""):
     """
     Arguments:
         - status (optional): Name of a Trello List <str>
-    Returns: <dict>
+    Returns: <List(Item)>
     """
     lists = get_lists()
     trello_cards = []
@@ -48,13 +49,12 @@ def get_cards(status=""):
             response = requests.get(constructed_url, params=params).json()
 
             for card in response:
-                trello_cards.append({ 'id': card['id'], 'title': card["name"], 'status': list_info["name"] })
+                trello_cards.append(Item(card["id"], card["name"], list_info["name"]))
             return trello_cards
     else:
         constructed_url = TRELLO_BASE_URL + "boards/" + TRELLO_BOARD_ID + "/cards"
         response = requests.get(constructed_url, params=params).json()
 
         for card in response:
-            trello_cards.append({ 'id': card['id'], 'title': card["name"], 'status': get_list_name(card["idList"]) })
-                    
+            trello_cards.append(Item(card["id"], card["name"], get_list_name(card["idList"])))
     return trello_cards

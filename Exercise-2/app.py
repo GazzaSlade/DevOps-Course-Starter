@@ -1,19 +1,28 @@
 from flask import Flask, render_template, request, redirect, url_for
+from os import environ
+import requests
 import session_items as session
+import trello_functions
 
 # Create Flask object and pass it configuration found in flask_config.py
 app = Flask(__name__)
 app.config.from_object('flask_config.Config')
 
+# Define global variables
+base_url = "https://api.trello.com/1/"
+params = {
+    "key": environ['TRELLO_API_KEY'],
+    "token": environ['TRELLO_TOKEN']
+}
 
-# Create base route for default web page and define a function to be executed whenever a request hits the route endpoint
+# Create base route and define function to be executed whenever a user navigates to the home page
 @app.route('/')
 def index():
-    # Define get_items variable to retrieve all items currently saved within the browser session
-    # Reverse sort (alphabetic) the results by 'status' to get 'Not Started' before 'Completed'
-    get_items = sorted(session.get_items(), key=lambda item: item['status'], reverse=True)
+    # Retrieve all cards on the Trello board and store the result in a variable
+    get_items = trello_functions.get_cards()
+
     # Return the rendered "index.html" template
-    # Pass the value of get_items into the template as variable items (used by Jinja2)
+    # Pass the value of the above variable into the template as variable "items" (used by Jinja2)
     return render_template("index.html", items=get_items)
 
 

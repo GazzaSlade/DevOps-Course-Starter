@@ -57,8 +57,11 @@ def complete_item(item_id):
 # This path contains a variable '<item_id>' which will change depending on which item button is clicked
 @app.route('/delete_item/<item_id>', methods=['POST'])
 def delete_item(item_id):
-    # Delete the item from the browser session
-    session.delete_item({'id': int(item_id)})
+    constructed_url = base_url + "cards/" + item_id
+
+    # Send DELETE request to the /cards/ API endpoint to delete an existing item
+    response = requests.delete(constructed_url, params=params)
+
     # Finally redirect the user back to the '/' route where the base route function executes again
     return redirect('/')
 

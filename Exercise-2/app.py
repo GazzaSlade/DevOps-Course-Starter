@@ -43,12 +43,17 @@ def add_item():
     return redirect('/')
 
 
-# Create route for marking items as complete and function to be executed when HTML form is submitted
+# Create route for marking items as complete and function to be executed when the "Mark as Complete" button is clicked
 # This path contains a variable '<item_id>' which will change depending on which item button is clicked
 @app.route('/complete_item/<item_id>', methods=['POST'])
 def complete_item(item_id):
-    # Save the item, passing through the new item dictionary value. 'id' and 'title' stay the same, 'status' is updated
-    session.save_item({'id': int(item_id), 'status': 'Complete', 'title': session.get_item(item_id)['title']})
+    # Update the global "params" variable with a couple of list-specific key/values
+    params.update({"idList": "5f3fbee92784723fe0d53c81"})
+    constructed_url = base_url + "cards/" + item_id
+
+    # Send PUT request to the /cards/ API endpoint to move an existing item to a new list
+    response = requests.put(constructed_url, params=params)
+
     # Finally redirect the user back to the '/' route where the base route function executes again
     return redirect('/')
 

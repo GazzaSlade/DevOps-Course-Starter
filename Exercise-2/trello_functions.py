@@ -57,12 +57,12 @@ def get_cards(status=""):
             response = requests.get(constructed_url, params=params).json()
 
             for card in response:
-                trello_cards.append(Item(card["id"], card["name"], list_info["name"], card["desc"]))
+                trello_cards.append(Item(card["id"], card["name"], list_info["name"], card["desc"], card["badges"]["due"]))
             return trello_cards
     else:
         constructed_url = TRELLO_BASE_URL + "boards/" + TRELLO_BOARD_ID + "/cards"
         response = requests.get(constructed_url, params=params).json()
 
         for card in response:
-            trello_cards.append(Item(card["id"], card["name"], get_list_name(card["idList"]), card["desc"]))
+            trello_cards.append(Item(card["id"], card["name"], get_list_name(card["idList"]), card["desc"], card["badges"]["due"]))
     return trello_cards

@@ -16,6 +16,7 @@
         <div class="form-inline-container">
           <input class="form-control" name="add_item_title" type="text" placeholder="Enter Item Name" maxlength="128" autofocus />
           <input class="form-control" name="add_item_description" type="text" placeholder="Enter Item Description" maxlength="256" />
+          <input class="form-control form-control-date" name="add_due_date" type="date" />
           <button class="btn btn-primary btn-width-150">Add New Item</button>
         </div>
       </form>
@@ -26,13 +27,14 @@
         <table>
           <!-- Specify the width of each column in percentage to enable responsive design -->
           <colgroup>
+            <col span="1" style="width: 20%">
+            <col span="1" style="width: 15%">
             <col span="1" style="width: 25%">
             <col span="1" style="width: 15%">
-            <col span="1" style="width: 30%">
-            <col span="1" style="width: 30%">
+            <col span="1" style="width: 25%">
           </colgroup>
           <!-- Create table header outside of the for loop since we only require this once -->
-          <tr><th>ITEM NAME</th><th>ITEM STATUS</th><th>DESCRIPTION</th><th>ACTIONS</th><th></th></tr>
+          <tr><th>ITEM NAME</th><th>ITEM STATUS</th><th>DESCRIPTION</th><th>DUE DATE</th><th>ACTIONS</th><th></th></tr>
         <!-- For each item within the 'items' variable passed through using the 
           render_template() method within the app.py file, create a new <li> 
           element and populate this with the item title -->
@@ -40,7 +42,7 @@
           <!-- Add button for each listed item which when clicked will provide the
             'complete_item' method with the correct item id -->
         {% for item in items %}
-          <tr><td>{{ item.get_title() }}</td><td>{{ item.get_status() }}</td><td>{{ item.get_description() }}</td><td><button class="btn btn-primary" type="submit" formaction="{{ url_for('complete_item', item_id=item.get_id()) }}">Mark as Complete</button></td><td><button class="btn btn-primary" type="submit" formaction="{{ url_for('delete_item', item_id=item.get_id()) }}">X</button></td></tr>
+          <tr><td>{{ item.get_title() }}</td><td>{{ item.get_status() }}</td><td>{{ item.get_description() }}</td><td>{{ item.get_due_date() }}</td><td><button class="btn btn-primary btn-action" type="submit" formaction="{{ url_for('complete_item', item_id=item.get_id()) }}">Mark as Complete</button><button class="btn btn-primary btn-action" type="submit" formaction="{{ url_for('delete_item', item_id=item.get_id()) }}">X</button></td></tr>
         {% endfor %}
         </table>
       </form>

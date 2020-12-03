@@ -1,6 +1,7 @@
 from os import environ
 import requests
 import json
+from dateutil import parser
 from classes import Item
 
 TRELLO_MEMBER_ID = environ['TRELLO_MEMBER_ID']
@@ -10,6 +11,13 @@ params = {
     "key": environ['TRELLO_API_KEY'],
     "token": environ['TRELLO_TOKEN']
 }
+
+def friendly_date(date):
+    if date:
+        friendly = parser.isoparse(date)
+        return friendly.strftime(format="%Y-%m-%d")
+    else:
+        return None
 
 def get_lists(board_id=TRELLO_BOARD_ID):
     """

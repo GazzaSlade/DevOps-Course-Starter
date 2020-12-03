@@ -31,6 +31,7 @@ form {
 table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 11pt;
 }
 
 tr {
@@ -63,6 +64,11 @@ FORM ELEMENT STYLES
     min-width: 150px;
 }
 
+.btn-action {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 
 /*
 =========================
@@ -70,11 +76,15 @@ BOOTSTRAP OVERRIDE STYLES
 =========================
 */
 
-.form-control, .btn {
+.form-control, .form-control-date, .btn {
     display: inline-block !important;
     height: 50px !important;
     max-height: 50px !important;
     vertical-align: unset !important;
+}
+
+.form-control-date {
+    width: auto !important
 }
 
 .navbar {

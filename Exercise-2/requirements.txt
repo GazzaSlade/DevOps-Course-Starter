@@ -4,3 +4,4 @@ trello
 requests
 pytest
 selenium
+python-dateutil

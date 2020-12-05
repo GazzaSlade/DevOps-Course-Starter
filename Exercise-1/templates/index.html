@@ -2,17 +2,47 @@
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
-    <h1 class="display-4">To-Do App</h1>
-    <p class="lead">Just another to-do app.</p>
-  </div>
 
   <div class="row">
     <div class="col-md-12">
-      <h2>Items</h2>
-      <ul class="list-group mb-4">
-        <!-- List the todo items here -->
-      </ul>
+      <!-- Add a form element, and specify the path and method to use when the
+          form is submitted -->
+      <form action="/add_item" method="POST">
+        <!-- Add a header, textbox and button element to our form
+          When the button is clicked, the user is sent to the '/add_item' route,
+          and the textbox value is added to the 'request.form' dictionary for use
+          within the app.py file -->
+        <h3>ADD NEW ITEM</h3>
+        <div class="form-inline-container">
+          <input class="form-control" name="add_item_title" type="text" placeholder="Enter Item Name" maxlength="128" autofocus />
+          <button class="btn btn-primary btn-width-150">Add New Item</button>
+        </div>
+      </form>
+
+      <!-- Add new form element which will be submitted when any item button is clicked -->
+      <form method="POST">
+        <!-- Replace unordered list element <ul> with table for nicer formatting -->
+        <table>
+          <!-- Specify the width of each column in percentage to enable responsive design -->
+          <colgroup>
+            <col span="1" style="width: 30%">
+            <col span="1" style="width: 20%">
+            <col span="1" style="width: 45%">
+            <col span="1" style="width: 5%">
+          </colgroup>
+          <!-- Create table header outside of the for loop since we only require this once -->
+          <tr><th>ITEM NAME</th><th>ITEM STATUS</th><th>ACTIONS</th><th></th></tr>
+        <!-- For each item within the 'items' variable passed through using the 
+          render_template() method within the app.py file, create a new <li> 
+          element and populate this with the item title -->
+
+          <!-- Add button for each listed item which when clicked will provide the
+            'complete_item' method with the correct item id -->
+        {% for item in items %}
+          <tr><td>{{ item.title }}</td><td>{{ item.status }}</td><td><button class="btn btn-primary" type="submit" name="complete_item_{{ item.id }}" formaction="/complete_item/{{ item.id }}">Mark as Complete</button></td><td><button class="btn btn-primary" type="submit" name="delete_item_{{ item.id }}" formaction="/delete_item/{{ item.id }}">X</button></td></tr>
+        {% endfor %}
+        </table>
+      </form>
     </div>
   </div>
 {% endblock %}

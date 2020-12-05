@@ -67,3 +67,22 @@ def save_item(item):
     session['items'] = updated_items
 
     return item
+
+
+# Create 'delete_item' method which will delete an item passed to it if the item id exists in the session['items'] dictionary
+def delete_item(item):
+    """
+    Deletes an existing item in the session. If no existing item matches the ID of the specified item, nothing is deleted.
+
+    Args:
+        item: The item to delete.
+    """
+    # Retrieve existing items
+    existing_items = get_items()
+    # Create a new list of items, excluding an item if the item id passed to this method matches an existing item id
+    updated_items = [existing_item for existing_item in existing_items if item['id'] != existing_item['id']]
+
+    # Update the session distionary with the new list of items
+    session['items'] = updated_items
+
+    return item

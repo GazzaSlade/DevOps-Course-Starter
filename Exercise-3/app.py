@@ -30,16 +30,16 @@ def index():
 @app.route('/add_item', methods=['POST'])
 def add_item():
     # Retrieve HTML form values and store the reslts in variables
-    new_item = request.form.get('add_item_title', None)
+    item_title = request.form.get('add_item_title', None)
     item_description = request.form.get('add_item_description', None)
     item_due_date = request.form.get('add_due_date', None)
 
     # Update the global "params" variable with a couple of list-specific key/values
-    params.update({"idList": "5f3fbee985386f08ed6c7c77", "name": new_item, "desc": item_description, "due": item_due_date}) # To-Do List ID
+    params.update({"idList": "5f3fbee985386f08ed6c7c77", "name": item_title, "desc": item_description, "due": item_due_date}) # To-Do List ID
 
     # Send POST request to the /cards/ API endpoint to publish a new item to the Trello list
     constructed_url = base_url + "cards/"
-    if new_item:
+    if item_title:
         response = requests.post(constructed_url, params=params)
 
     # Finally redirect the user back to the '/' route where the base route function executes again

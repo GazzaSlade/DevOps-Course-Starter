@@ -21,9 +21,12 @@ def index():
     # Retrieve all cards on the Trello board and store the result in a variable
     get_items = trello_functions.get_cards()
 
+    # Retrieve all list names for use in JavaScript
+    options = trello_functions.get_lists()
+
     # Return the rendered "index.html" template
     # Pass the value of the above variable into the template as variable "items" (used by Jinja2)
-    return render_template("index.html", items=get_items)
+    return render_template("index.html", items=get_items, options=options)
 
 
 # Create route for adding items to the todo list and function to be executed when HTML form is submitted

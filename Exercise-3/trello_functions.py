@@ -17,7 +17,7 @@ def friendly_date(date):
         friendly = parser.isoparse(date)
         return friendly.strftime(format="%Y-%m-%d")
     else:
-        return None
+        return ""
 
 def get_lists(board_id=TRELLO_BOARD_ID):
     """

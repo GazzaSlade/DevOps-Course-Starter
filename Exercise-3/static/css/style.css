@@ -69,6 +69,14 @@ FORM ELEMENT STYLES
     margin-right: 5px;
 }
 
+.dropdown {
+    width: 100%;
+}
+
+.dropdown-status {
+    vertical-align: middle;
+}
+
 
 /*
 =========================

@@ -10,10 +10,6 @@ GLOBAL STYLES
     box-sizing: border-box;
 }
 
-input {
-    width: 90%;
-}
-
 /*
 ==========
 TAG STYLES
@@ -45,6 +41,19 @@ tr {
 td {
     height: 50px;
     padding: 10px 0 10px 0;
+}
+
+input {
+    width: 90%;
+}
+
+table {
+    counter-reset: section;
+}
+
+.count:before {
+    counter-increment: section;
+    content: counter(section);
 }
 
 

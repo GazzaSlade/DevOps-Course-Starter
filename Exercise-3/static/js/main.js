@@ -56,13 +56,28 @@ function trackIndex(elem) {
     const index = Array.from(elem.parentElement.children).indexOf(elem);
 
     return index;
-}
+};
 
 function deselectElement(elem) {
     var newInnerHTML = elem.value;
-    console.log("Element first child value is: " + newInnerHTML);
+    console.log("Element value is: " + newInnerHTML);
+    updateField(elem);
 
     elem.parentNode.innerHTML = newInnerHTML;
+};
+
+function updateField(elem) {
+    let itemId = elem.parentElement.parentElement.children[0].querySelector("input[name='id']").value;
+    console.log("Id of changed item is: " + itemId);
+    // fetch('update_item/' + itemId, {
+    //     method: 'post',
+    //     headers: {
+    //         'Accept': 'application/json, text/plain, */*',
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({ a: 7, str: 'Some string: &=&' })
+    // }).then(res => res.json())
+    //     .then(res => console.log(res));
 };
 
 window.onload = function () {

@@ -49,20 +49,25 @@ def add_item():
     return redirect('/')
 
 
-# Create route for marking items as complete and function to be executed when the "Mark as Complete" button is clicked
-# This path contains a variable '<item_id>' which will change depending on which item button is clicked
-@app.route('/complete_item/<item_id>', methods=['POST'])
-def complete_item(item_id):
-    # Update the global "params" variable with a couple of list-specific key/values
-    params.update({"idList": "5f3fbee92784723fe0d53c81"})
+## Create route for marking items as complete and function to be executed when the "Mark as Complete" button is clicked
+## This path contains a variable '<item_id>' which will change depending on which item button is clicked
+#@app.route('/complete_item/<item_id>', methods=['POST'])
+#def complete_item(item_id):
+#    # Update the global "params" variable with a couple of list-specific key/values
+#    params.update({"idList": "5f3fbee92784723fe0d53c81"})
+#    constructed_url = base_url + "cards/" + item_id
+#
+#    # Send PUT request to the /cards/ API endpoint to move an existing item to a new list
+#    response = requests.put(constructed_url, params=params)
+#
+#    # Finally redirect the user back to the '/' route where the base route function executes again
+#    return redirect('/')
+
+@app.route('/update_item/<item_id>', methods=['POST'])
+def update_item(item_id):
     constructed_url = base_url + "cards/" + item_id
-
-    # Send PUT request to the /cards/ API endpoint to move an existing item to a new list
     response = requests.put(constructed_url, params=params)
-
-    # Finally redirect the user back to the '/' route where the base route function executes again
     return redirect('/')
-
 
 # Create route for deleting items and function to be executed when item delete button is clicked
 # This path contains a variable '<item_id>' which will change depending on which item button is clicked

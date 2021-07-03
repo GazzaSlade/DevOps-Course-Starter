@@ -6,12 +6,11 @@ function makeEditable(elem) {
     elemType = elem.getAttribute('data-type');
     elemValue = elem.innerHTML;
 
-    switch(elemType) {
+    switch (elemType) {
         case "select":
             if (elem.querySelectorAll("select").length !== 0) {
                 break;
             } else {
-                elem.innerHTML = "";
                 node = document.createElement("select");
                 for (var i = 0; i < options.length; i++) {
                     let tmp = document.createElement("option");
@@ -21,7 +20,9 @@ function makeEditable(elem) {
                     }
                     node.add(tmp);
                 }
-                addFocusOutListener(elem);
+                elem.innerHTML = "";
+                elem.appendChild(node).focus();
+                addFocusOutListener(node);
                 break;
             }
 
@@ -33,7 +34,8 @@ function makeEditable(elem) {
                 node.setAttribute("type", "text");
                 node.setAttribute("value", elemValue);
                 elem.innerHTML = "";
-                addFocusOutListener(elem);
+                elem.appendChild(node).focus();
+                addFocusOutListener(node);
                 break;
             }
 
@@ -43,35 +45,36 @@ function makeEditable(elem) {
     };
 
     function addFocusOutListener(elem) {
-        elem.appendChild(node).focus();
-
-        elem.addEventListener("focusout", function(event) {
-            deselectElement(elem);
+        elem.addEventListener("focusout", function (event) {
+            event.preventDefault();
+            deselectElement(this);
         });
     }
 };
 
-function trackIndex(elem) {    
+function trackIndex(elem) {
     const index = Array.from(elem.parentElement.children).indexOf(elem);
 
     return index;
 }
 
 function deselectElement(elem) {
-    var newInnerHTML = elem.children[0].value;
+    var newInnerHTML = elem.value;
+    console.log("Element first child value is: " + newInnerHTML);
 
-    elem.innerHTML = newInnerHTML;
+    elem.parentNode.innerHTML = newInnerHTML;
 };
 
-window.onload = function() {
+window.onload = function () {
 
     let elems = document.querySelectorAll(".editable");
 
-    for (var i=0; i < elems.length; i++) {
-        elems[i].addEventListener("click", function(){makeEditable(this)});
-        elems[i].addEventListener("keydown", function(event){
-            if( (event.keyCode == 13) ) {
+    for (var i = 0; i < elems.length; i++) {
+        elems[i].addEventListener("click", function () { makeEditable(this) });
+        elems[i].addEventListener("keydown", function (event) {
+            if ((event.keyCode == 13)) {
                 event.preventDefault();
+                deselectElement(this.children[0]);
                 return false;
             }
         });

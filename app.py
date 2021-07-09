@@ -38,8 +38,7 @@ def add_item():
     item_due_date = request.form.get('add_due_date', None)
 
     # Update the global "params" variable with a couple of list-specific key/values
-    idList = environ['TRELLO_BOARD_ID'] if 'TRELLO_BOARD_ID' in environ else "5f3fbee985386f08ed6c7c77"
-    params.update({"idList": idList, "name": item_title, "desc": item_description, "due": item_due_date}) # To-Do List ID
+    params.update({"idList": environ['TRELLO_TODO_LIST'], "name": item_title, "desc": item_description, "due": item_due_date}) # To-Do List ID
 
     # Send POST request to the /cards/ API endpoint to publish a new item to the Trello list
     constructed_url = base_url + "cards/"

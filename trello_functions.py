@@ -5,7 +5,7 @@ from dateutil import parser
 from classes import Item
 
 TRELLO_MEMBER_ID = environ['TRELLO_MEMBER_ID']
-TRELLO_BOARD_ID = environ['TRELLO_BOARD_ID'] if 'TRELLO_BOARD_ID' in environ else "5f3fbee941f0381f9d52aeef"
+TRELLO_BOARD_ID = environ['TRELLO_BOARD_ID']
 TRELLO_BASE_URL = "https://api.trello.com/1/"
 params = {
     "key": environ['TRELLO_API_KEY'],

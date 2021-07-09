@@ -1,52 +1,60 @@
+var originalValue;
+
 function makeEditable(elem) {
 
-    index = trackIndex(elem);
-    const originalElem = elem;
-    var node;
-    elemType = elem.getAttribute('data-type');
-    elemValue = elem.innerHTML;
+    if (elem.children[0] == undefined ) {
+        index = trackIndex(elem);
+        originalValue = elem.innerHTML;
+        var node;
+        elemType = elem.getAttribute('data-type');
+        elemValue = elem.innerHTML;
 
-    switch (elemType) {
-        case "select":
-            if (elem.querySelectorAll("select").length !== 0) {
-                break;
-            } else {
-                node = document.createElement("select");
-                for (var i = 0; i < options.length; i++) {
-                    let tmp = document.createElement("option");
-                    tmp.text = options[i];
-                    if (elemValue == tmp.text) {
-                        tmp.setAttribute("selected", "true");
+        switch (elemType) {
+            case "select":
+                if (elem.querySelectorAll("select").length !== 0) {
+                    break;
+                } else {
+                    node = document.createElement("select");
+                    for (var i = 0; i < options.length; i++) {
+                        let tmp = document.createElement("option");
+                        tmp.text = options[i];
+                        if (elemValue == tmp.text) {
+                            tmp.setAttribute("selected", "true");
+                        }
+                        node.add(tmp);
                     }
-                    node.add(tmp);
+                    elem.innerHTML = "";
+                    elem.appendChild(node).focus();
+                    addFocusOutListener(node);
+                    break;
                 }
-                elem.innerHTML = "";
-                elem.appendChild(node).focus();
-                addFocusOutListener(node);
-                break;
-            }
 
-        case "text":
-            if (elem.querySelectorAll("input").length !== 0) {
-                break;
-            } else {
-                node = document.createElement("input");
-                node.setAttribute("type", "text");
-                node.setAttribute("value", elemValue);
-                elem.innerHTML = "";
-                elem.appendChild(node).focus();
-                addFocusOutListener(node);
-                break;
-            }
+            case "text":
+                if (elem.querySelectorAll("input").length !== 0) {
+                    break;
+                } else {
+                    node = document.createElement("input");
+                    node.setAttribute("type", "text");
+                    node.setAttribute("value", elemValue);
+                    elem.innerHTML = "";
+                    elem.appendChild(node).focus();
+                    addFocusOutListener(node);
+                    break;
+                }
 
-        default:
-            console.log("Other element")
-            break;
+            default:
+                break;
+        };
     };
 
     function addFocusOutListener(elem) {
-        elem.addEventListener("focusout", function (event) {
-            event.preventDefault();
+        elem.addEventListener("keydown", function (event) {
+            if ((event.keyCode == 13)) {
+                event.preventDefault();
+                this.blur();
+            }
+        });
+        elem.addEventListener("blur", function (event) {
             deselectElement(this);
         });
     }
@@ -59,25 +67,41 @@ function trackIndex(elem) {
 };
 
 function deselectElement(elem) {
+    var originalHTML = originalValue;
     var newInnerHTML = elem.value;
-    console.log("Element value is: " + newInnerHTML);
-    updateField(elem);
+    if (originalHTML != newInnerHTML) {
+        updateField(elem);
+    } else {
+        console.log("Element unchanged, not updating...");
+        elem.parentNode.innerHTML = originalHTML;
+        return false;
+    };
 
     elem.parentNode.innerHTML = newInnerHTML;
+    return false;
 };
 
 function updateField(elem) {
     let itemId = elem.parentElement.parentElement.children[0].querySelector("input[name='id']").value;
-    console.log("Id of changed item is: " + itemId);
-    // fetch('update_item/' + itemId, {
-    //     method: 'post',
-    //     headers: {
-    //         'Accept': 'application/json, text/plain, */*',
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({ a: 7, str: 'Some string: &=&' })
-    // }).then(res => res.json())
-    //     .then(res => console.log(res));
+    let dataId = elem.parentElement.getAttribute("data-id");
+
+    if (dataId == "title" || dataId == "description") {
+        let title = dataId;
+        var description = elem.parentElement.parentElement.querySelector("td[data-id='description'] > input[type='text']").value;
+    } else if (dataId == "status") {
+        let status = dataId;
+    }
+
+    fetch('/update_item', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 'itemId': itemId, 'dataId': dataId, 'description': description })
+    }).then(function (response) {
+        console.log(response);
+    });
 };
 
 window.onload = function () {
@@ -85,13 +109,8 @@ window.onload = function () {
     let elems = document.querySelectorAll(".editable");
 
     for (var i = 0; i < elems.length; i++) {
-        elems[i].addEventListener("click", function () { makeEditable(this) });
-        elems[i].addEventListener("keydown", function (event) {
-            if ((event.keyCode == 13)) {
-                event.preventDefault();
-                deselectElement(this.children[0]);
-                return false;
-            }
+        elems[i].addEventListener("click", function () {
+            makeEditable(this);
         });
     };
 };

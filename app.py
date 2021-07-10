@@ -14,6 +14,7 @@ params = {
     "key": environ['TRELLO_API_KEY'],
     "token": environ['TRELLO_TOKEN']
 }
+options = {}
 
 # Create base route and define function to be executed whenever a user navigates to the home page
 @app.route('/')
@@ -51,40 +52,28 @@ def add_item():
 
 ## Create route for marking items as complete and function to be executed when the "Mark as Complete" button is clicked
 ## This path contains a variable '<item_id>' which will change depending on which item button is clicked
-#@app.route('/complete_item/<item_id>', methods=['POST'])
-#def complete_item(item_id):
-#    # Update the global "params" variable with a couple of list-specific key/values
-#    params.update({"idList": "5f3fbee92784723fe0d53c81"})
-#    constructed_url = base_url + "cards/" + item_id
-#
-#    # Send PUT request to the /cards/ API endpoint to move an existing item to a new list
-#    response = requests.put(constructed_url, params=params)
-#
-#    # Finally redirect the user back to the '/' route where the base route function executes again
-#    return redirect('/')
 
 @app.route('/update_item', methods=['POST'])
 def update_item():
     data = request.get_json()
     item_id = data['itemId']
+    item_title = data['itemTitle']
     item_type = data['dataId']
     item_description = data['description']
 
     if item_type == "title" or item_type == "description":
-        params.update({'desc': item_description})
-        constructed_url = base_url + "cards/" + item_id
-        response = requests.put(constructed_url, params=params)
+        try:
+            params.update({'name': item_title, 'desc': item_description})
+            constructed_url = base_url + "cards/" + item_id
+            response = requests.put(constructed_url, params=params)
+        except:
+            raise Exception("An error occured while updating the item. Please refresh and try again")
     elif item_type == "status":
         pass
     else:
         return
 
-
     return "Test Response"
-
-    # constructed_url = base_url + "cards/" + item_id
-    # response = requests.put(constructed_url, params=params)
-    # return redirect('/')
 
 # Create route for deleting items and function to be executed when item delete button is clicked
 # This path contains a variable '<item_id>' which will change depending on which item button is clicked

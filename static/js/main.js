@@ -2,7 +2,7 @@ var originalValue;
 
 function makeEditable(elem) {
 
-    if (elem.children[0] == undefined ) {
+    if (elem.children[0] == undefined) {
         index = trackIndex(elem);
         originalValue = elem.innerHTML;
         var node;
@@ -84,12 +84,21 @@ function deselectElement(elem) {
 function updateField(elem) {
     let itemId = elem.parentElement.parentElement.children[0].querySelector("input[name='id']").value;
     let dataId = elem.parentElement.getAttribute("data-id");
+    let title = elem.parentElement.parentElement.querySelector("td[data-id='title']").innerHTML;
+    let status = elem.parentElement.parentElement.querySelector("td[data-id='status']").innerHTML;
+    let description = elem.parentElement.parentElement.querySelector("td[data-id='description']").innerHTML;
 
-    if (dataId == "title" || dataId == "description") {
-        let title = dataId;
-        var description = elem.parentElement.parentElement.querySelector("td[data-id='description'] > input[type='text']").value;
+    if (dataId == "title") {
+        title = elem.parentElement.parentElement.querySelector("td[data-id='title'] > input[type='text']").value;
+    } else if (dataId == "description") {
+        description = elem.parentElement.parentElement.querySelector("td[data-id='description'] > input[type='text']").value;
     } else if (dataId == "status") {
-        let status = dataId;
+        console.log("ORIGINAL ELEM: " + elem);
+        elem = document.querySelector("td[data-id='status']").innerHTML;
+        console.log("NEW ELEM: " + elem);
+        title = elem.parentElement.parentElement.querySelector("td[data-id='title']").innerHTML;
+        description = elem.parentElement.parentElement.querySelector("td[data-id='description']").innerHTML;
+        console.log("New Status: " + status);
     }
 
     fetch('/update_item', {
@@ -98,7 +107,7 @@ function updateField(elem) {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ 'itemId': itemId, 'dataId': dataId, 'description': description })
+        body: JSON.stringify({ 'itemId': itemId, 'itemTitle': title, 'dataId': dataId, 'description': description })
     }).then(function (response) {
         console.log(response);
     });
